@@ -27,13 +27,18 @@ cat <<EOF > /data/data/com.termux/files/home/ccminer/start.sh
 #!/data/data/com.termux/files/usr/bin/bash
 termux-wake-lock
 crond
+sshd
 echo "Termux is ready."
 
+# Display the current crontab configuration
+echo "Current crontab configuration:"
+crontab -l
+
 # Get the current hour (24-hour format)
-current_hour=$(date +"%H")
+current_hour=\$(date +"%H")
 
 # Run ccminer if the time is between 07:00 and 18:00
-if [ "$current_hour" -ge 7 ] && [ "$current_hour" -lt 18 ]; then
+if [ "\$current_hour" -ge 7 ] && [ "\$current_hour" -lt 18 ]; then
   ~/ccminer/ccminer -c ~/ccminer/config.json
 else
   echo "ccminer will not run outside 07:00 - 18:00."
@@ -46,6 +51,7 @@ chmod +x /data/data/com.termux/files/home/ccminer/start.sh
 # Create the /data/data/com.termux/files/home/ccminer/start_cc.sh script
 cat <<EOF > /data/data/com.termux/files/home/ccminer/start_cc.sh
 #!/bin/sh
+# Run ccminer
 ~/ccminer/ccminer -c ~/ccminer/config.json
 EOF
 
@@ -53,4 +59,3 @@ EOF
 chmod +x /data/data/com.termux/files/home/ccminer/start_cc.sh
 
 echo "Installation and configuration complete."
-
